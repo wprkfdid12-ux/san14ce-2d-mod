@@ -201,7 +201,8 @@ public sealed class InstallerEngine {
     }
 
     // 같이 써도 되는 우리 쪽 모드(빌드마다 해시가 바뀜): SAN14CE 맵 확장 도우미 dinput8.dll — 파일 안 표시 글자로 알아봄
-    static readonly string[] CompanionMarks = { "SAN14CE map expansion", "MapExpand_RealCell" };
+    // + 삼갤 AI 모드 dinput8.dll(새로 빌드될 때마다 해시가 바뀜): 내보내는 함수 이름으로 알아봄
+    static readonly string[] CompanionMarks = { "SAN14CE map expansion", "MapExpand_RealCell", "SAN14CombatGetApi" };
     static bool Companion(string p) {
         var fi = new FileInfo(p);
         if (fi.Length < 4096 || fi.Length > (32 << 20)) return false;
@@ -209,6 +210,19 @@ public sealed class InstallerEngine {
         foreach (var m in CompanionMarks) if (s.IndexOf(m, StringComparison.Ordinal) >= 0) return true;
         return false;
     }
+    // 모르는 로더가 무슨 모드인지 댓글만으로 알 수 있게: 파일 설명·만든 곳·안에 든 SAN14_*.dll 이름 몇 개
+    static string DllHint(string p) {
+        var parts = new List<string>();
+        try { var v = FileVersionInfo.GetVersionInfo(p); foreach (var x in new[] { v.FileDescription, v.ProductName, v.CompanyName }) if (!String.IsNullOrEmpty(x) && !parts.Contains(x.Trim())) parts.Add(x.Trim()); } catch { }
+        try {
+            var b = File.ReadAllBytes(p); string a = Encoding.ASCII.GetString(b), u = Encoding.Unicode.GetString(b);
+            foreach (var src in new[] { a, u })
+                foreach (System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(src, @"[A-Za-z0-9_]{2,40}\.(?:dll|DLL|asi)"))
+                    if (parts.Count < 6 && !parts.Contains(m.Value) && !Regex1(m.Value)) parts.Add(m.Value);
+        } catch { }
+        return parts.Count == 0 ? "" : " · " + String.Join(", ", parts);
+    }
+    static bool Regex1(string n) { string l = n.ToLowerInvariant(); return l == "kernel32.dll" || l == "user32.dll" || l == "ntdll.dll" || l == "dinput8.dll" || l == "dxgi.dll" || l == "msvcrt.dll" || l == "advapi32.dll" || l == "shell32.dll" || l.StartsWith("api-ms-") || l.StartsWith("vcruntime") || l.StartsWith("ucrtbase") || l.StartsWith("msvcp"); }
     // ---------------- 검사 ----------------
     void CheckExisting(string root) {
         if (File.Exists(Path.Combine(root, "FieldLeader3D_Managed20", "FieldLeader3D_Runtime.exe")))
@@ -218,7 +232,7 @@ public sealed class InstallerEngine {
             if (!File.Exists(p)) continue;
             string sh = Sha(p);
             if (!ALLOW.Contains(sh) && !Companion(p))
-                throw new IOException(n + " 기반 모드가 있습니다. 호환성이 확인되지 않아 설치하지 않습니다. 기존 파일은 변경하지 않았습니다. (" + n + " " + sh.Substring(0, 12) + ")");
+                throw new IOException(n + " 기반 모드가 있습니다. 호환성이 확인되지 않아 설치하지 않습니다. 기존 파일은 변경하지 않았습니다. (" + n + " " + sh.Substring(0, 12) + " · " + new FileInfo(p).Length + "바이트" + DllHint(p) + ")");
         }
         string dll = Safe(root, "d3d11.dll");
         if (File.Exists(dll) || File.Exists(Path.Combine(root, "San14_2D", "San14Officers.bin"))) {

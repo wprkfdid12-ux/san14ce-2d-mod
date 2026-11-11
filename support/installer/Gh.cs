@@ -29,7 +29,7 @@ public static class Gh {
     public const string Page = "https://github.com/" + Repo;
     public const string Raw = "https://raw.githubusercontent.com/" + Repo + "/main/";
     public const string IpRaw = "https://raw.githubusercontent.com/wprkfdid12-ux/san14ce-integrated-patch/main/updates/index.json";
-    public const int InstallerVersion = 1;
+    public const int InstallerVersion = 2;
 
     public static string CacheRoot() {
         string b = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
