@@ -1,0 +1,1 @@
+public static class BuildInfo { public const string ManifestHash = "0000000000000000000000000000000000000000000000000000000000000000"; }
