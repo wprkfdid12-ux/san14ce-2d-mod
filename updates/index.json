@@ -1,0 +1,115 @@
+{
+ "format": 1,
+ "installer": 1,
+ "releases": [
+  {
+   "tag": "v31d",
+   "date": "2026-11-08",
+   "title": "언 강 그림 · 그림 실패 알림",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "언 강 위 부대가 물속에 잠겨 보이던 것",
+     "d": "계절 맵으로 얼린 강에서 장수·병사·수송 그림이 얼음 위에 섭니다"
+    },
+    {
+     "t": "장수 그림이 안 뜨면 알림 창",
+     "d": "무장 이름·그림 번호·이유 — 창에서 Ctrl+C 로 복사해 댓글로"
+    },
+    {
+     "t": "독점 전체화면이면 알림 대신 안내줄",
+     "d": "「２Ｄ 총변경」 창 아래 안내줄에 같은 내용"
+    }
+   ],
+   "manifest": "updates/v31d/manifest.json",
+   "manifestSha": "0f1618f78049bdad4d033f4eeefc008915c1cd0d9f6910b1fd081a3a433c2fa5",
+   "manifestSize": 2025094,
+   "core": "updates/v31d/core.zip",
+   "coreSha": "e327b1c86159f125ca1e385e04760aeedc443a70cd54f6d6257791ccd562d271",
+   "coreSize": 5839169
+  },
+  {
+   "tag": "v31c",
+   "date": "2026-11-07",
+   "title": "카드판 글꼴 = 게임 글꼴",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "스프라이트 카드판 글꼴을 게임 글꼴로",
+     "d": "게임 글꼴을 못 찾던 PC 도 찾도록 찾는 범위를 넓힘"
+    }
+   ],
+   "manifest": "updates/v31c/manifest.json",
+   "manifestSha": "565636079d1434a8be49d6a5c5fbde0c7e6a2253fd0cc10d9d97d5aa728eb911",
+   "manifestSize": 2025094,
+   "core": "updates/v31c/core.zip",
+   "coreSha": "b678ba7601f279a2ba49a4d974c45476f9c87be82d64b9ce5a3faec0b957f82d",
+   "coreSize": 5832753
+  },
+  {
+   "tag": "v31b",
+   "date": "2026-11-07",
+   "title": "부대상세 「２Ｄ 개별」 단추 자리",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "부대상세 「２Ｄ 개별」 단추를 무장·포로 옆에 같은 높이로",
+     "d": ""
+    },
+    {
+     "t": "개별 창이 열려 있는 동안 아래 무장·포로 단추 숨김",
+     "d": ""
+    }
+   ],
+   "manifest": "updates/v31b/manifest.json",
+   "manifestSha": "066b0980aa9a35868cd33ceb6b0f53328c5dc7682d974f3aac6e21b80afb87d4",
+   "manifestSize": 2025094,
+   "core": "updates/v31b/core.zip",
+   "coreSha": "caf9c02f0c3bcb6df6b84290c58d12bc37c0609c02a6201e3b29d1f704a01214",
+   "coreSize": 5832031
+  },
+  {
+   "tag": "v31",
+   "date": "2026-11-07",
+   "title": "11월 5일 게임판 호환 · 카드판 · 장사 물결",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "11월 5일 게임 업데이트판 호환",
+     "d": "통합패치 R43 · 계절 맵 · AI 모드와 함께"
+    },
+    {
+     "t": "진형별 설정",
+     "d": "병사 수·간격·위치를 진형마다 따로"
+    },
+    {
+     "t": "스프라이트 고르기 카드판",
+     "d": "검색 · 필터 · 즐겨찾기, 신무장도 자동으로"
+    },
+    {
+     "t": "장사 진형 물결",
+     "d": "움직이면 뱀처럼 구불구불"
+    },
+    {
+     "t": "부대상세에 「２Ｄ 개별」 단추",
+     "d": "그 장수만 따로 설정"
+    }
+   ],
+   "manifest": "updates/v31/manifest.json",
+   "manifestSha": "a2aa978bb17f58e63b76ea215ae1963b186a4dec1b6fbbae457ad897ea29a406",
+   "manifestSize": 2025093,
+   "core": "updates/v31/core.zip",
+   "coreSha": "bf51ac0a9bf9e5f8496e3f63e400805e762bbd3a71aa7f44953c014a488517bf",
+   "coreSize": 5830152
+  }
+ ],
+ "assets": {
+  "url": "https://github.com/wprkfdid12-ux/san14ce-2d-mod/releases/download/assets-1/assets.zip",
+  "sha256": "e1c3014bf2b532b8b0bbc79d30ab3c2b4773cebd4e64a3130d6359212528e0e5",
+  "size": 1448392748
+ }
+}
