@@ -181,7 +181,7 @@ public sealed class SetupForm : Form {
     [DllImport("user32.dll")] static extern bool SetProcessDPIAware();
     readonly Pane hero = new Pane(), verBox = new Pane(), warn = new Pane(), notes = new Pane(), stline = new Pane(), foot = new Pane();
     readonly Btn main = new Btn(), verify = new Btn(), back = new Btn();
-    readonly LinkLabel lnkReinstall = new LinkLabel(), lnkRecover = new LinkLabel(), lnkRemove = new LinkLabel(), lnkFolder = new LinkLabel();
+    readonly LinkLabel lnkReinstall = new LinkLabel(), lnkRecover = new LinkLabel(), lnkRemove = new LinkLabel(), lnkFolder = new LinkLabel(), lnkMyArt = new LinkLabel();
     readonly Panel list = new Panel(), logBox = new Panel();
     readonly TextBox log = new TextBox();
     readonly List<VerRow> rows = new List<VerRow>();
@@ -234,6 +234,11 @@ public sealed class SetupForm : Form {
         }
         lnkRemove.LinkClicked += async delegate { if (MessageBox.Show(this, "2D 모드 파일을 지울까요? 개인 설정과 백업은 남깁니다.", "제거 확인", MessageBoxButtons.YesNo) == DialogResult.Yes) await Run("remove", null); };
         lnkRecover.LinkClicked += async delegate { await Run("recover", null); };
+        // 왼쪽: 「내 그림」 폴더 열기 (직접 만든 장수 그림 — 게임 폴더 San14_2D\내 그림)
+        lnkMyArt.Text = "▸ 내 그림 폴더 열기 (직접 만든 장수 그림)"; StyleLink(lnkMyArt, 13);
+        lnkMyArt.LinkColor = lnkMyArt.ActiveLinkColor = lnkMyArt.VisitedLinkColor = Fx.Gold;
+        lnkMyArt.TextAlign = ContentAlignment.MiddleLeft; Place(lnkMyArt, 24, 588, Math.Max(120, lx - 24 - 10), 22);
+        lnkMyArt.LinkClicked += delegate { OpenMyArt(); };
         lnkReinstall.LinkClicked += async delegate { var r = index == null ? null : (Find(installedTag) ?? Latest()); if (r != null) await Install(r, true); else MessageBox.Show(this, "판 목록을 아직 못 읽었습니다.", "2D 모드"); };
         warn.Draw = DrawWarn; Place(warn, 24, 618, 673, 74);
         stline.Draw = DrawStatus; Place(stline, 24, 704, 673, 40);
@@ -483,6 +488,7 @@ public sealed class SetupForm : Form {
         foreach (var l in new[] { lnkReinstall, lnkRecover, lnkRemove, lnkFolder }) l.Enabled = !busy;
         lnkReinstall.Enabled = !busy && hasGame && index != null;
         lnkRemove.Enabled = !busy && hasGame && installedTag != null;
+        lnkMyArt.Enabled = !busy && hasGame && installedTag != null;
         verBox.Invalidate(); notes.Invalidate(); foot.Invalidate();
     }
     void StyleGold() { main.Style(0xe8c07a, 0xb8862f, 0xf6dca0, 0x241a0c, 0x4a3616); }
@@ -584,6 +590,17 @@ public sealed class SetupForm : Form {
         prog("장수 그림 묶음 확인 중", 100);
         if (!String.IsNullOrEmpty(sha) && Gh.Sha(dst) != sha) { File.Delete(dst); throw new IOException("받은 장수 그림 묶음이 손상됐습니다. 다시 눌러 주세요."); }
         return dst;
+    }
+    void OpenMyArt() {
+        if (busy) { MessageBox.Show(this, "지금 하는 작업이 끝난 뒤 눌러 주세요.", "2D 모드"); return; }
+        if (gameRoot.Length == 0) { MessageBox.Show(this, "게임 폴더를 먼저 골라 주세요(위 [바꾸기]).", "2D 모드"); return; }
+        string d;
+        try { d = InstallerEngine.EnsureMyArt(gameRoot); } catch (Exception ex) { MessageBox.Show(this, "내 그림 폴더를 열 수 없습니다: " + ex.Message, "2D 모드"); return; }
+        if (d == null) { MessageBox.Show(this, "2D 모드를 먼저 설치하세요.", "2D 모드"); return; }
+        Log("▸ 내 그림 폴더 · " + d);
+        Log("  그림마다 폴더 하나(폴더 이름 = 카드 이름)에 move.mesh · move.rgba · attack.mesh · attack.rgba 4개 → 게임을 켜면 「２Ｄ 무장 스프라이트 설정」 오른쪽 목록에 뜸");
+        try { Process.Start(new ProcessStartInfo("explorer.exe", "\"" + d + "\"") { UseShellExecute = true }); }
+        catch (Exception ex) { MessageBox.Show(this, "탐색기를 열 수 없습니다: " + ex.Message + "\r\n" + d, "2D 모드"); }
     }
     static void OpenUrl(string u) { try { Process.Start(new ProcessStartInfo(u) { UseShellExecute = true }); } catch { } }
 

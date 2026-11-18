@@ -117,6 +117,17 @@ public sealed class InstallerEngine {
         return m;
     }
     public static string StatePath(string root) { return Path.Combine(root, "San14_2D", ".installed.json"); }
+    // 「내 그림」(직접 만든 장수 그림, 2D v31h~): San14_2D\내 그림\<이름>\{move,attack}.{mesh,rgba} — 설치기 목록 밖 개인 파일
+    public const string MyArtName = "내 그림";
+    // 설치돼 있으면 빈 「내 그림」 폴더를 만들고(없을 때만) 경로를 돌려줌. 안 깔려 있으면 null
+    public static string EnsureMyArt(string folder) {
+        string root = Path.GetFullPath(folder), top = Path.Combine(root, "San14_2D");
+        if (!Directory.Exists(top) || !File.Exists(StatePath(root))) return null;
+        NoLinks(top);
+        string d = Path.Combine(top, MyArtName);
+        if (Directory.Exists(d)) NoLinks(d); else Directory.CreateDirectory(d);
+        return d;
+    }
     InstalledState State(string root) {
         NoLinks(StatePath(root));
         var s = ReadJson<InstalledState>(StatePath(root));
@@ -462,7 +473,11 @@ public sealed class InstallerEngine {
         if (!tx.hadPrevious) {      // 설치 기록 없이 옮겨 둔 개인 설정 되살리기 (옛 설치기 패치)
             string ini = Path.Combine(Backup(root, tx.id), "San14_2D", "San14_2D.ini");
             if (File.Exists(ini)) File.Copy(ini, Path.Combine(root, "San14_2D", "San14_2D.ini"), true);
+            // 제거 뒤 남겨 둔 「내 그림」도 새 설치로 되돌림
+            string my = Path.Combine(Backup(root, tx.id), "San14_2D", MyArtName), nmy = Path.Combine(root, "San14_2D", MyArtName);
+            if (Directory.Exists(my) && !Directory.Exists(nmy)) { NoLinks(my); Directory.Move(my, nmy); }
         }
+        try { EnsureMyArt(root); } catch { }     // 빈 「내 그림」 폴더(없을 때만) — 실패해도 설치는 그대로
         DeleteOwnedStage(Stage(root, tx.id), tx.id);
         File.Delete(Journal(root));
         // 다음 갱신이 빠르도록 지금 설치된 파일의 크기·시각·해시를 기억
@@ -632,6 +647,8 @@ public sealed class InstallerEngine {
                     for (string d = Path.GetDirectoryName(Safe(root, f.path)); d.Length > top.Length; d = Path.GetDirectoryName(d)) dirs.Add(d);
                 foreach (var d in dirs.OrderByDescending(x => x.Length))
                     if (Directory.Exists(d)) { NoLinks(d); if (!Directory.EnumerateFileSystemEntries(d).Any()) Directory.Delete(d); }
+                string my = Path.Combine(top, MyArtName);       // 빈 「내 그림」만 지움(그림이 들어 있으면 남김)
+                if (Directory.Exists(my)) { NoLinks(my); if (!Directory.EnumerateFileSystemEntries(my).Any()) Directory.Delete(my); }
                 if (!Directory.EnumerateFileSystemEntries(top).Any()) Directory.Delete(top);
             }
             try { File.Delete(CachePath(root)); } catch { }
