@@ -3,6 +3,37 @@
  "installer": 2,
  "releases": [
   {
+   "tag": "v31h",
+   "date": "2026-11-18",
+   "title": "프레임 개선 · 내 그림",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "프레임 개선: 2D 검사 부담을 약 4분의 1로",
+     "d": "그림마다 그래픽 장치에 상태를 묻던 것을 적어 두고 읽기 — 프레임당 0.5ms → 0.12ms(데모 전투), 그래픽은 그대로"
+    },
+    {
+     "t": "맞지 않으면 저절로 예전 방식",
+     "d": "다른 프로그램이 같은 자리를 바꾸거나 값이 다르면 그 실행 동안 예전대로"
+    },
+    {
+     "t": "내 그림: 직접 만든 장수 그림 폴더",
+     "d": "San14_2D\\내 그림\\<이름>\\ 에 move·attack 파일 4개 → 스프라이트 설정 목록에 그 이름으로 뜸"
+    },
+    {
+     "t": "시간 측정은 평소 꺼짐",
+     "d": "프레임을 재 볼 때만 San14_2D_Vehicle.ini [Perf] Measure=1"
+    }
+   ],
+   "manifest": "updates/v31h/manifest.json",
+   "manifestSha": "b67e54f5026f88eb2edb4fd387686ed99eabba6e397747b8e559a479c92420da",
+   "manifestSize": 2025094,
+   "core": "updates/v31h/core.zip",
+   "coreSha": "9978811640f9b024505286730abc098ac027e92af3eba99a0bef174d29276074",
+   "coreSize": 5853270
+  },
+  {
    "tag": "v31e",
    "date": "2026-11-12",
    "title": "언 강 높이 고침 · 새 AI 모드 인식",
