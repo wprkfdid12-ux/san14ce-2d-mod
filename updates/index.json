@@ -3,6 +3,33 @@
  "installer": 2,
  "releases": [
   {
+   "tag": "v31f",
+   "date": "2026-11-18",
+   "title": "프레임: 2D 검사 부담 줄임",
+   "game": "11월 5일 업데이트판",
+   "stamp": "6ad06f53",
+   "notes": [
+    {
+     "t": "2D 가 그림마다 그래픽 장치에 상태를 묻던 것을 적어 두고 읽기로",
+     "d": "전투 화면 초당 20만 번 안팎 묻던 부담이 빠짐 — 판정 결과는 같음"
+    },
+    {
+     "t": "맞지 않으면 저절로 예전 방식",
+     "d": "다른 프로그램이 같은 자리를 바꾸거나 값이 다르면 그 실행 동안 예전대로"
+    },
+    {
+     "t": "자가진단에 프레임 시간 기록",
+     "d": "2D_diag.log 'V31F PERF' — 프레임당 2D 검사 시간 · CPU/GPU 프레임 시간"
+    }
+   ],
+   "manifest": "updates/v31f/manifest.json",
+   "manifestSha": "d9c1a7288e520ed19bd25162440c8f7dacffe013ab019ccde4c8006cb0c35049",
+   "manifestSize": 2025094,
+   "core": "updates/v31f/core.zip",
+   "coreSha": "c88cb5fe3fc989990b9ed0e5875091138d67ffcda2c327956db0e6c8c59849bb",
+   "coreSize": 5847110
+  },
+  {
    "tag": "v31e",
    "date": "2026-11-12",
    "title": "언 강 높이 고침 · 새 AI 모드 인식",
